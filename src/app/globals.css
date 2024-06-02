@@ -2,32 +2,221 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: "TT Norms";
+  src: url('../fonts/TTNorms-Black.ttf');
+  font-weight: 700;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@font-face {
+  font-family: "TT Norms";
+  src: url('../fonts/TTNorms-ExtraBold.ttf');
+  font-weight: 600;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@font-face {
+  font-family: "TT Norms";
+  src: url('../fonts/TTNorms-Bold.ttf');
+  font-weight: 500;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@font-face {
+  font-family: "TT Norms";
+  src: url('../fonts/TTNorms-Medium.ttf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "TT Norms";
+  src: url('../fonts/TTNorms-Regular.ttf');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "TT Norms";
+  src: url('../fonts/TTNorms-Light.ttf');
+  font-weight: 200;
+}
+
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* Links */
+
+a, a:link, a:visited  {
+    text-decoration: none;
+}
+
+a:hover  {
+    text-decoration: none;
+}
+
+/* Common */
+
+aside, nav, footer, header, section, main {
+	display: block;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-size: inherit;
+	font-weight: inherit;
+}
+
+ul, ul li {
+	list-style: none;
+}
+
+img {
+	vertical-align: top;
+}
+
+img, svg {
+	max-width: 100%;
+	height: auto;
+}
+
+address {
+  font-style: normal;
+}
+
+/* Form */
+
+input, textarea, button, select {
+	font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background-color: transparent;
+}
+
+input::-ms-clear {
+	display: none;
+}
+
+button, input[type="submit"] {
+    display: inline-block;
+    box-shadow: none;
+    background-color: transparent;
+    background: none;
+    cursor: pointer;
+}
+
+input:focus, input:active,
+button:focus, button:active {
+    outline: none;
+}
+
+button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+label {
+	cursor: pointer;
+}
+
+legend {
+	display: block;
+}
+
+body{ 
+  font-family: 'TT Norms';
+  height: 100%;
+}
+#root{
+  height: 100%;
+}
+html{
+  height: 100%;
+
+}
+
+/* #default-select{
+  border-radius: 100px;
+} */
+
+.hideScroll {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.hideScroll::-webkit-scrollbar {
+  width: 0px; /* For Chrome, Safari, and Opera */
+}
+.Mui-focused .MuiOutlinedInput-notchedOutline{
+  border: 1px solid #484850 !important; 
+  border-radius: "5px 5px 0 0" !important;
+}
+.Mui-focused{
+  color: #767676 !important;
+}
+
+.ReactModal__Overlay {
+	background-color: rgba(0, 0, 0, 0.632) !important;
+	z-index: 50;
+}
+
+
+.block-shadow{
+  -webkit-box-shadow: 0px 0px 22px -5px rgba(34, 60, 80, 0.17);
+  -moz-box-shadow: 0px 0px 22px -5px rgba(34, 60, 80, 0.17);
+  box-shadow: 0px 0px 22px -5px rgba(34, 60, 80, 0.17);
+}
+
+input:disabled{
+  color: #767676
+}
+
+.custom-select {
+  width: 100%;
+  position: relative;
+}
+
+select {
+  appearance: none;
+  /*  safari  */
+  -webkit-appearance: none;
+  /*  other styles for aesthetics */
+  width: 100%;
+  font-size: 16px;
+  padding: 0.6em 1em 0.6em 1em;
+  background-color: #fff;
+  border: 1px solid #767676;
+  border-radius: 7px;
+  color: #000;
+  cursor: pointer;
+}
+
+.custom-select::before,
+.custom-select::after {
+  --size: 0.3rem;
+  content: "";
+  position: absolute;
+  right: 1rem;
+  pointer-events: none;
+}
+
+.custom-select::before {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid black;
+  top: 40%;
+}
+
+.custom-select::after {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid black;
+  top: 55%;
+}
+
+.select-true{
+  user-select: text;
 }
