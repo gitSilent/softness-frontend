@@ -13,8 +13,13 @@ instance.interceptors.request.use(
   (config) => {
 
     let accessToken = document.cookie.replace(/(?:(?:^|.*;\s*)access\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    config.headers.Authorization = `Bearer ${accessToken}`
-    return config
+    let refreshToken = document.cookie.replace(/(?:(?:^|.*;\s*)refresh\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    if(accessToken || refreshToken){
+      config.headers.Authorization = `Bearer ${accessToken}`
+      return config
+    }else{
+      return config
+    }
   }
 )
 
@@ -33,7 +38,7 @@ instance.interceptors.response.use(
     //пользователю нужно переавторизоваться 
     let refreshTokenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)refresh\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     if (refreshTokenCookie === "") {
-      return false
+      throw error
     }
 
     const originalRequest = { ...error.config };
@@ -67,6 +72,7 @@ instance.interceptors.response.use(
         // переотправляем запрос с обновленным accessToken
         return instance.request(originalRequest);
       } catch (error) {
+        
       }
     }
     // на случай, если возникла другая ошибка (не связанная с авторизацией)

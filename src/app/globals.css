@@ -220,3 +220,36 @@ select {
 .select-true{
   user-select: text;
 }
+
+
+
+
+
+
+/* pagination styles */
+
+ul[role="navigation"]{
+  display: flex;
+  gap: 5px;
+}
+
+ul[role="navigation"] li {
+  padding: 4px 7px 4px 7px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  color: white;
+  border-radius: 100px;
+}
+
+li.selected{
+  background-color: #D89556 !important;
+
+}
+
+.next, .previous {
+  width: fit-content !important;
+}

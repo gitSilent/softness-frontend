@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 
 import Header from '../components/Header'
@@ -12,62 +13,75 @@ import safely_icon from '@/../public/images/svg-icons/safely_icon.svg'
 import heart_icon from '@/../public/images/svg-icons/heart_icon.svg'
 import ProductCard from '../components/ProductCard'
 import product from '@/../public/images/product_card.jpg'
+import { getProducts } from "@/api/requests";
+import { IProductsResponse } from "@/api/models";
+import { useEffect, useState } from "react";
 
 
 export default function Home() {
+  const [products, setProducts] = useState<IProductsResponse>()
+
+  const fetchData = () => {
+    getProducts({})
+      .then((res) => {
+        setProducts(res.data)
+      })
+  }
+
+  useEffect(() => {
+    fetchData()
+  },[])
   return (
     <div className='relative min-h-full'>
-      <Header/>
+      <Header />
       <main className='flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px] '>
-        <Image src={main_banner} alt="" className='hidden sm:block'/>
-        <Image src={mobile_banner} alt="" className='sm:hidden'/>
+        <Image src={main_banner} alt="" className='hidden sm:block' />
+        <Image src={mobile_banner} alt="" className='sm:hidden' />
 
         <div className='flex justify-between w-full flex-col gap-[20px] mt-[100px] mb-[100px] text-[18px] xm:flex-row'>
           <div className='flex flex-row items-center font-medium gap-[40px]'>
-            <Image src={leaf_icon} alt="" className='w-[120px]'/>
+            <Image src={leaf_icon} alt="" className='w-[120px]' />
             <span>Гипоаллергенно</span>
           </div>
           <div className='flex flex-row items-center font-medium gap-[40px]'>
-            <Image src={safely_icon} alt="" className='w-[120px]'/>
+            <Image src={safely_icon} alt="" className='w-[120px]' />
             <span>Безопасно</span>
           </div>
           <div className='flex flex-row items-center font-medium gap-[40px]'>
-            <Image src={heart_icon} alt="" className='w-[120px]'/>
+            <Image src={heart_icon} alt="" className='w-[120px]' />
             <span>С душой</span>
           </div>
         </div>
-        
+
         <div className='flex flex-wrap w-full justify-center'>
-          <Image src={main_card1} alt="" className='w-full max-w-[380px] sl:max-w-[450px]'/>
-          <Image src={main_card2} alt="" className='w-full max-w-[380px] sl:max-w-[450px]'/>
-          <Image src={main_card3} alt="" className='w-full max-w-[380px] sl:max-w-[450px]'/>
+          <Image src={main_card1} alt="" className='w-full max-w-[380px] sl:max-w-[450px]' />
+          <Image src={main_card2} alt="" className='w-full max-w-[380px] sl:max-w-[450px]' />
+          <Image src={main_card3} alt="" className='w-full max-w-[380px] sl:max-w-[450px]' />
         </div>
 
-        
+
         <section>
           <h2 className='m-auto w-fit text-[25px] uppercase font-semibold my-[50px] sl:text-[35px]'>Бестселлеры</h2>
           <div className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <ProductCard id={1} photos={[{image:"#"}]} price={1500} title="#"/>
-            <ProductCard id={1} photos={[{image:"#"}]} price={1500} title="#"/>
-            <ProductCard id={1} photos={[{image:"#"}]} price={1500} title="#"/>
-            <ProductCard id={1} photos={[{image:"#"}]} price={1500} title="#"/>
-            <ProductCard id={1} photos={[{image:"#"}]} price={1500} title="#"/>
+            {products?.results?.map((item) => (
+              <ProductCard data={{ ...item }} getData={fetchData} />
+            ))}
           </div>
         </section>
 
         <section className='flex flex-col justify-center items-center mb-[100px]'>
           <h2 className='m-auto w-fit text-[25px] uppercase font-semibold my-[50px] sl:text-[35px]'>Наши работы</h2>
           <div className='flex flex-wrap gap-[10px] m-auto justify-start items-center sl:gap-[20px]'>
-              <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]'/>
-              <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]'/>
-              <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]'/>
-              <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]'/>
-              <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]'/>
+            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
+            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
+            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
+            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
+            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
 
           </div>
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

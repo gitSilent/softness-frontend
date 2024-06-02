@@ -4,16 +4,29 @@ import debounce from 'lodash/debounce';
 import ex from '@/../public/images/svg-icons/ex.svg'
 import product from '@/../public/images/product_card.jpg'
 import Image from "next/image";
+import { ICartItem } from '@/api/models';
+import { cartItemDecrement, cartItemIncrement, deleteFromCart } from '@/api/requests';
 
-export default function CartItem() {
+interface IProps {
+  data: ICartItem,
+  getData: Function
+}
+
+export default function CartItem({ data, getData }: IProps) {
   const [quantity, setQuantity] = useState<number>(1)
 
   const debouncedIncrement = useCallback(debounce(() => {
-    console.log('Обновление корзины +');
+    cartItemIncrement({ cart_item_id: data.id })
+      .then((res) => {
+        getData()
+      })
   }, 250), []);
 
   const debouncedDecrement = useCallback(debounce(() => {
-    console.log('Обновление корзины -');
+    cartItemDecrement({ cart_item_id: data.id })
+      .then((res) => {
+        getData()
+      })
   }, 250), []);
 
   return (
@@ -24,17 +37,27 @@ export default function CartItem() {
 
       <div className='flex justify-center flex-col md:flex-row md:items-center md:w-full md:justify-between gap-[7px] ss:gap-[20px]'>
         <div>
-          <span className='text-[16px] ss:text-[18px] md:text-[24px]'>Плюшевый медведь</span>
-          <p className='hidden md:block max-w-[250px] text-[12px] font-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum dicta at reprehenderit. Culpa nemo ea praesentium neque iure recusandae accusantium.</p>
+          <span className='text-[16px] ss:text-[18px] md:text-[24px]'>{data.product.title}</span>
+          <p className='hidden md:block max-w-[250px] text-[12px] font-light'>{data.product.desc}</p>
         </div>
         <div className='flex items-center gap-[10px]'>
-          <button onClick={() => {debouncedDecrement()}} className='flex justify-center items-center rounded-[6px] bg-[#EFB279] text-[19px] w-[20px] h-[20px] md:w-[24px] md:h-[24px] md:text-[22px]'>-</button>
-          <span>{quantity}</span>
+          <button onClick={() => { debouncedDecrement() }} className='flex justify-center items-center rounded-[6px] bg-[#EFB279] text-[19px] w-[20px] h-[20px] md:w-[24px] md:h-[24px] md:text-[22px]'>-</button>
+          <span>{data.amount}</span>
           <button onClick={() => (debouncedIncrement())} className='flex justify-center items-center rounded-[6px] bg-[#EFB279] text-[19px] w-[20px] h-[20px] md:w-[24px] md:h-[24px] md:text-[22px]'>+</button>
         </div>
-        <span className='text-[16px] ss:text-[18px] md:text-[24px] font-medium'>2500 Р</span>
-        <Image src={ex} alt="" className='hidden md:block mr-[50px] w-[17px] h-[17px] hover:cursor-pointer' />
-        <Image src={ex} alt="" className='absolute md:hidden w-[17px] h-[17px] top-[35px] right-[35px]' />
+        <span className='text-[16px] ss:text-[18px] md:text-[24px] font-medium'>{data.product.price} Р</span>
+        <Image onClick={()=>{
+          deleteFromCart({cart_item_id:data.id})
+          .then((res)=>{
+            getData()
+          })
+        }} src={ex} alt="" className='hidden md:block mr-[50px] w-[17px] h-[17px] hover:cursor-pointer' />
+        <Image onClick={()=>{
+          deleteFromCart({cart_item_id:data.id})
+          .then((res)=>{
+            getData()
+          })
+        }} src={ex} alt="" className='absolute md:hidden w-[17px] h-[17px] top-[35px] right-[35px]' />
       </div>
 
     </div>

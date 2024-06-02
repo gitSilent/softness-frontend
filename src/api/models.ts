@@ -29,11 +29,17 @@ export interface IProduct {
     },
     photos: IPhoto[],
     in_favorite: boolean,
+    in_cart: boolean,
+    fav_item_id: null | number,
     title: string,
     desc: string,
     slug: string,
     old_price: number,
-    price: number
+    price: number,
+    filler: string,
+    material: string,
+    knitting_type: string,
+    is_hard_materials: boolean,
 }
 
 export interface IProductsResponse{
@@ -60,10 +66,31 @@ export interface IOrder{
     user: number
 }
 
+export interface ICartItem{
+    id: number,
+    product: IProduct,
+    amount: number,
+    cart: number
+}
 
+export interface ICart{
+    id: number,
+    items: ICartItem[],
+    total: number,
+    user: number
+}
 
+export interface IFavoriteItem{
+    id: number,
+    product: IProduct,
+    favoritelist: number
+}
 
-
+export interface IFavorite{
+    id: number,
+    items: IFavoriteItem[],
+    user: number
+}
 
 
 

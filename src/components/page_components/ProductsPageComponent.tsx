@@ -1,11 +1,11 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FormControl from "@mui/material/FormControl/FormControl";
 import InputLabel from "@mui/material/InputLabel/InputLabel";
 import Select from "@mui/material/Select/Select";
 import MenuItem from "@mui/material/MenuItem/MenuItem";
 import Image from "next/image";
-
+import ReactPaginate from 'react-paginate';
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -13,20 +13,60 @@ import ProductCard from "@/components/ProductCard";
 
 import product from '@/../public/images/product_card.jpg'
 import ex from '@/../public/images/svg-icons/ex.svg'
-import { IProduct } from "@/api/models";
+import { IProduct, IProductsResponse } from "@/api/models";
 import { getProducts } from "@/api/requests";
 
-export default function ProductsPageComponent(data:IProduct[]) {
-  const [products, setProducts] = useState<IProduct[]>()
+export default function ProductsPageComponent() {
+  const [products, setProducts] = useState<IProductsResponse>()
   const [maxPrice, setMaxPrice] = useState<number>(0)
   const [minPrice, setMinPrice] = useState<number>(0)
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
-  useEffect(()=>{
-    getProducts()
-    .then((res)=>{
-      setProducts(res.data.results)
-    })
-  },[])
+  const maxPriceInput = useRef<any>(null)
+  const minPriceInput = useRef<any>(null)
+
+  const fetchData = () => {
+    getProducts({ page: currentPage, min_price: minPrice, max_price: maxPrice })
+      .then((res) => {
+        setProducts(res.data)
+      })
+  }
+
+  useEffect(() => {
+    if (minPrice === 0) {
+      minPriceInput.current.value = ""
+    }
+
+    if (maxPrice === 0) {
+      maxPriceInput.current.value = ""
+    }
+
+    fetchData()
+  }, [currentPage, minPrice, maxPrice])
+
+  // useEffect(() => {
+  //   if (minPrice === 0) {
+  //     minPriceInput.current.value = ""
+  //   }
+
+  //   setCurrentPage(1)
+  //   getProducts({ page: currentPage, min_price: minPrice, max_price: maxPrice })
+  //     .then((res) => {
+  //       setProducts(res.data)
+  //     })
+  // }, [minPrice])
+
+  // useEffect(() => {
+  //   if (maxPrice === 0) {
+  //     maxPriceInput.current.value = ""
+  //   }
+
+  //   setCurrentPage(1)
+  //   getProducts({ page: currentPage, min_price: minPrice, max_price: maxPrice })
+  //   .then((res) => {
+  //     setProducts(res.data)
+  //   })
+  // }, [maxPrice])
 
   return (
     <div className="relative min-h-full">
@@ -51,7 +91,7 @@ export default function ProductsPageComponent(data:IProduct[]) {
             <FormControl>
               <InputLabel id="demo-simple-select-label">Сортировка</InputLabel>
               <Select
-              style={{borderRadius:'100px', border:'1px', borderColor:'#767676'}}
+                style={{ borderRadius: '100px', border: '1px', borderColor: '#767676' }}
                 labelId="demo-simple-select-label"
                 id="default-select"
                 label="Сортировка"
@@ -65,64 +105,61 @@ export default function ProductsPageComponent(data:IProduct[]) {
 
             <div className="relative flex items-center gap-[4px] max-w-[195px] md:ml-[20px] border-[1px] border-[#767676] py-[8px] px-[15px] rounded-full">
               <span className="text-[#646464] text-[16px] font-normal">От</span>
-              <input 
-                onChange={(e)=>{setMinPrice(Number(e.target.value) >= 1 ? Number(e.target.value) : 0)}}
-                placeholder="2500" 
-                value={minPrice}
+              <input
+                onBlur={(e) => {
+                  setMinPrice(Number(e.target.value) >= 1 ? Number(e.target.value) : 0)
+                }}
+                placeholder="2500"
+                ref={minPriceInput}
+                // value={minPrice}
                 type="number" className="border-none font-normal rounded-full max-w-[80px] bg-[#ECECEC] py-[5px] px-[10px]" />
-              
-              {minPrice !== 0 &&  <div onClick={()=>{setMinPrice(0)}} className="absolute flex justify-center items-center w-[20px] h-[20px] top-0 right-0 rounded-full bg-black hover:cursor-pointer">
-                <Image src={ex} alt="" className="brightness-200 w-[10px]"/>
+
+              {minPrice !== 0 && <div onClick={() => {
+                setMinPrice(0)
+              }} className="absolute flex justify-center items-center w-[20px] h-[20px] top-0 right-0 rounded-full bg-black hover:cursor-pointer">
+                <Image src={ex} alt="" className="brightness-200 w-[10px]" />
               </div>}
             </div>
 
             <div className="relative flex items-center gap-[4px] max-w-[195px] md:ml-[10px] border-[1px] border-[#767676] py-[8px] px-[15px] rounded-full">
               <span className="text-[#646464] text-[16px] font-normal">До</span>
-              <input 
-                onChange={(e)=>{setMaxPrice(Number(e.target.value) >= 1 ? Number(e.target.value) : 0)}} 
-                placeholder="2500" 
-                value={maxPrice}
+              <input
+                onBlur={(e) => {
+                  setMaxPrice(Number(e.target.value) >= 1 ? Number(e.target.value) : 0)
+                }}
+                placeholder="2500"
+                ref={maxPriceInput}
+                // value={maxPrice}
                 type="number" className="border-none font-normal rounded-full max-w-[80px] bg-[#ECECEC] py-[5px] px-[10px]" />
-              
-              {maxPrice !== 0 && <div onClick={()=>{setMaxPrice(0)}} className="absolute flex justify-center items-center w-[20px] h-[20px] top-0 right-0 rounded-full bg-black hover:cursor-pointer">
-                <Image src={ex} alt="" className="brightness-200 w-[10px]"/>
+
+              {maxPrice !== 0 && <div onClick={() => { setMaxPrice(0) }} className="absolute flex justify-center items-center w-[20px] h-[20px] top-0 right-0 rounded-full bg-black hover:cursor-pointer">
+                <Image src={ex} alt="" className="brightness-200 w-[10px]" />
               </div>}
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {products?.map((item)=>(
-            <ProductCard {...item}/>
+          {products?.results?.map((item) => (
+            <ProductCard data={{...item}} getData={fetchData}/>
           ))}
+        </div>
 
+        <div className="mt-[50px] mx-auto">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="След. >"
+            onPageChange={(e) => {
+              setCurrentPage(e.selected + 1)
+              console.log(e.selected + 1);
+            }}
+            pageRangeDisplayed={2}
+            pageCount={products?.total_pages ? products?.total_pages : 0}
+            previousLabel="< Пред."
+            renderOnZeroPageCount={() => <div></div>}
+            forcePage={currentPage - 1}
+          />
 
-         
-
-          {/* <ProductCard
-            id={1}
-            photos={[{ image: "#" }]}
-            price={1500}
-            title="#"
-          />
-          <ProductCard
-            id={1}
-            photos={[{ image: "#" }]}
-            price={1500}
-            title="#"
-          />
-          <ProductCard
-            id={1}
-            photos={[{ image: "#" }]}
-            price={1500}
-            title="#"
-          />
-          <ProductCard
-            id={1}
-            photos={[{ image: "#" }]}
-            price={1500}
-            title="#"
-          /> */}
         </div>
       </main>
       <Footer />

@@ -29,10 +29,17 @@
   }
   
   .swiper-slide {
+    height: 100% !important;
     background-size: cover;
     background-position: center;
   }
   
+  .mySwiper2 .swiper-slide img {
+    position: relative;
+    height: 100% !important;
+    object-fit: cover;
+  }
+
   .mySwiper2 {
     height: 100%;
     width: 100%;
@@ -55,6 +62,14 @@
 
   .swiper-wrapper{
     gap: 10px;
+  }
+
+  .mySwiper2 {
+    border-radius: 25px;
+  }
+  .mySwiper2 .swiper-wrapper{ 
+    max-height: 300px;
+    /* overflow: hidden; */
   }
   .swiper-slide{
     margin: 0 !important;
