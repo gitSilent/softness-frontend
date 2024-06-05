@@ -44,30 +44,6 @@ export default function ProductsPageComponent() {
     fetchData()
   }, [currentPage, minPrice, maxPrice])
 
-  // useEffect(() => {
-  //   if (minPrice === 0) {
-  //     minPriceInput.current.value = ""
-  //   }
-
-  //   setCurrentPage(1)
-  //   getProducts({ page: currentPage, min_price: minPrice, max_price: maxPrice })
-  //     .then((res) => {
-  //       setProducts(res.data)
-  //     })
-  // }, [minPrice])
-
-  // useEffect(() => {
-  //   if (maxPrice === 0) {
-  //     maxPriceInput.current.value = ""
-  //   }
-
-  //   setCurrentPage(1)
-  //   getProducts({ page: currentPage, min_price: minPrice, max_price: maxPrice })
-  //   .then((res) => {
-  //     setProducts(res.data)
-  //   })
-  // }, [maxPrice])
-
   return (
     <div className="relative min-h-full">
       <Header />

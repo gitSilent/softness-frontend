@@ -22,8 +22,6 @@ export default function ProfilePageComponent() {
     getFavorite()
       .then((res) => {
         setFavorite(res.data)
-        console.log(res.data);
-
       })
   }
 
