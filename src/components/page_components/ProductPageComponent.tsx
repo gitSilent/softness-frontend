@@ -27,8 +27,8 @@ import "@/styles/bigSwiperStyles.css";
 
 import product from "@/../public/images/product_card.jpg";
 import cartIcon from "@/../public/images/svg-icons/cartIcon.svg";
-import { IProduct } from "@/api/models";
-import { addToCart, getProduct } from "@/api/requests";
+import { ICart, IProduct } from "@/api/models";
+import { addToCart, getCart, getProduct } from "@/api/requests";
 import { toastParams } from "@/service/toastifyParams";
 import { useRouter } from "next/navigation";
 
@@ -37,11 +37,20 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
   const router = useRouter()
   const ref = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
   // const { events } = useDraggable(ref);
+  const [cart, setCart] = useState<ICart>()
 
   const [product, setProduct] = useState<IProduct>()
 
   console.log(pk);
 
+  const fetchCartData = () => {
+    console.log(111111111);
+
+    getCart()
+      .then((res) => {
+        setCart(res.data)
+      })
+  }
 
   useEffect(() => {
     getProduct({ pk })
@@ -53,11 +62,11 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
   return (
     <div className="relative min-h-full">
       <ToastContainer />
-      <Header />
+      <Header cartData={cart} />
       <main className="flex flex-col items-center z-[1] m-auto pb-[400px] pt-[90px] px-[20px] max-w-[1400px]">
         <section className="relative flex flex-col max-w-[500px] lg:max-w-[1000px] w-full z-[1] ">
           <div className="flex flex-col lg:flex-row lg:gap-[80px]">
-            <div className="w-full max-w-[500px] h-fit">
+            <div className="w-full max-w-[500px] h-fit min-h-[150px]">
               <Swiper
                 style={{}}
                 spaceBetween={10}
@@ -66,6 +75,11 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper2"
               >
+                {product?.photos.length === 0 &&
+                  <SwiperSlide>
+                    <div className="mt-[10%] lg:mt-[25%]">нет фото</div>
+                  </SwiperSlide>
+                }
                 {product?.photos.map((item, idx) => (
                   <SwiperSlide key={idx}>
                     <Image src={item.photo} width={500} height={300} className="rounded-[25px]" alt="" />
@@ -119,7 +133,31 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
               </div>
 
               <div className="flex gap-[25px] mt-[30px]">
-                <button className="max-w-[280px] h-[65px]  rounded-[20px] text-[20px] w-full bg-black text-white">
+                <button onClick={() => {
+                  if (product?.id) {
+                    addToCart({ product_id: product?.id })
+                      .then((res) => {
+                        console.log(res);
+
+                        getProduct({ pk })
+                          .then((res) => {
+                            setProduct(res.data)
+                          })
+
+                        // toast.success("Товар добавлен в корзину", toastParams)
+                        router.push('/cart')
+                        
+                      }).catch((er) => {
+                        console.log('123123');
+
+                        if (er.response.status === 401) {
+                          router.push('/sign-in')
+                        } else {
+                          toast.error("Не удалось добавить товар в корзину", toastParams)
+                        }
+                      })
+                  }
+                }} className="max-w-[280px] h-[65px]  rounded-[20px] text-[20px] w-full bg-black text-white">
                   Купить
                 </button>
                 {product?.in_cart
@@ -132,29 +170,31 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
                     <span className="break-keep">Уже в корзине</span>
                   </button>
 
-                  : <button onClick={async() => {
-                    if(product?.id){
+                  : <button onClick={async () => {
+                    if (product?.id) {
                       // console.log(await addToCart({ product_id: product?.id }));
-                      
+
                       addToCart({ product_id: product?.id })
                         .then((res) => {
                           console.log(res);
-                          
+
                           getProduct({ pk })
                             .then((res) => {
                               setProduct(res.data)
                             })
+                          fetchCartData()
+
                           toast.success("Товар добавлен в корзину", toastParams)
-                        }).catch((er)=>{
+                        }).catch((er) => {
                           console.log('123123');
-                          
-                          if (er.response.status === 401){
+
+                          if (er.response.status === 401) {
                             router.push('/sign-in')
-                          }else{
+                          } else {
                             toast.error("Не удалось добавить товар в корзину", toastParams)
                           }
                         })
-                    } 
+                    }
                   }} className={`flex items-center justify-center min-w-[65px] min-h-[65px] rounded-[20px] border-[2px] border-black text-[20px] bg-white text-black`}>
                     <Image src={cartIcon} alt="" className="w-[20px]" />
                   </button>
@@ -167,28 +207,6 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
             <h2 className="text-[16px] font-medium uppercase mb-[10px]">Описание</h2>
             <p className="text-[14px] font-normal">{product?.desc}</p>
           </div>
-
-          {/* <h2 className="mt-[50px] text-[16px] font-medium uppercase mb-[10px]">Отзывы</h2>
-          <div className="flex gap-[10px] max-w-[100%] mx-auto overflow-x-auto hideScroll" {...events} ref={ref} >
-            <Review
-              username="Анастасия"
-              rating={5}
-              description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde voluptates, quae reprehenderit magni in ullam porro, numquam facere nobis repellat placeat tenetur quod? Quia nesciunt modi dolor id vitae beatae."
-              creation_date="10 сентября 2023" />
-
-            <Review
-              username="Анастасия"
-              rating={5}
-              description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde voluptates, quae reprehenderit magni in ullam porro, numquam facere nobis repellat placeat tenetur quod? Quia nesciunt modi dolor id vitae beatae."
-              creation_date="10 сентября 2023" />
-
-            <Review
-              username="Анастасия"
-              rating={5}
-              description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde voluptates, quae reprehenderit magni in ullam porro, numquam facere nobis repellat placeat tenetur quod? Quia nesciunt modi dolor id vitae beatae."
-              creation_date="10 сентября 2023" />
-
-          </div> */}
         </section>
 
       </main>

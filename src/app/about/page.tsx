@@ -44,7 +44,9 @@ export default function AboutPage() {
           {staticData.map((item, idx) => {
             return (
               <div key={idx}>
-                <div className={`flex flex-col items-center lg:flex-row${(idx+1) % 2 === 0 ? '-reverse': ''} lg:gap-9 lg:max-w-6xl lg:m-auto`}>
+                <div className={ (idx+1) % 2 === 0 
+                ? `flex flex-col items-center lg:flex-row-reverse lg:gap-9 lg:max-w-6xl lg:m-auto`
+                : `flex flex-col items-center lg:flex-row lg:gap-9 lg:max-w-6xl lg:m-auto`}>
                   <Image src={item.img} alt="" className="w-[410px]"/>
                   <div className={`flex flex-col ${(idx+1) % 2 === 0 ? 'items-end': 'items-start'} gap-5`}>
                     <h3 className='font-medium uppercase xs:text-xl sm:text-2xl'>{item.title}</h3>

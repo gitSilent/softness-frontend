@@ -8,18 +8,18 @@ import { toastParams } from '../service/toastifyParams';
 import { IProduct } from '../api/models';
 import { useRouter } from 'next/navigation';
 import { addToCart, addToFavorite, deleteFromFavorite } from '@/api/requests';
+import { useState } from 'react';
+import ImageSkeleton from './page_components/ImageSkeleton';
 
 interface IProps {
   data: IProduct,
-  getData: Function
+  getData: Function,
+  getCartData: Function,
 }
 
-export default function ProductCard({ data, getData }: IProps) {
-
+export default function ProductCard({ data, getData, getCartData }: IProps) {
+  const [isLoadComplete, setIsLoadComplete] = useState<boolean>(false)
   const router = useRouter()
-
-  const idproduct = 1
-  const in_favorite = false
 
   function handleClickCart() {
     if (data.in_cart) {
@@ -28,17 +28,29 @@ export default function ProductCard({ data, getData }: IProps) {
       addToCart({ product_id: data.id })
         .then((res) => {
           getData()
+          getCartData()
           toast.success("Товар добавлен в корзину", toastParams)
+        }).catch((er)=>{
+          router.push('/sign-in')
         })
     }
   }
+
   return (
-    <div className='relative flex flex-col max-w-[320px] max-h-[440px] rounded-tl-[25px] rounded-tr-[25px] overflow-hidden hover:cursor-pointer'>
+    <div className='relative flex flex-col w-full max-w-[320px] max-h-[440px] rounded-tl-[25px] rounded-tr-[25px] overflow-hidden hover:cursor-pointer'>
       <ToastContainer />
       <Link href={`/products/${data.id}`} className='flex flex-col'>
-        <div className='relative h-[250px] bg-gray-50'>
+        <div className='relative w-full h-[250px] bg-gray-50'>
+          {!isLoadComplete &&
+            <div className='z-[5] top-0 absolute w-full h-full'>
+              <ImageSkeleton />
+            </div>
+          }
+
           {data.photos.length !== 0
-            ? <Image src={data.photos[0].photo} height={300} width={300} alt="" className='h-full w-full object-cover' />
+            ? <Image onLoad={() => {
+              setIsLoadComplete(true)
+            }} src={data.photos[0].photo} height={300} width={300} alt="" className='h-full w-full object-cover' />
             : <span className='block h-fit w-fit absolute top-0 bottom-0 left-0 right-0 m-auto'>нет фото</span>
           }
         </div>
@@ -53,6 +65,8 @@ export default function ProductCard({ data, getData }: IProps) {
           addToFavorite({ product_id: data.id })
             .then((res) => {
               getData()
+            }).catch((er)=>{
+              router.push('/sign-in')
             })
         }
       }}

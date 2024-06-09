@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IAuth, ICart, ICity, IFavorite, IOrder, IProduct, IProductsResponse, IRegister } from "./models";
+import { IAuth, ICart, ICity, IFavorite, IFeedback, IOrder, IProduct, IProductsResponse, IRegister } from "./models";
 import { instance } from "./interceptor";
 
 export const DOMAIN = "http://localhost:8000/";
@@ -70,8 +70,8 @@ export const getCities = () => {
     return axios.get<ICity[]>(DOMAIN+"api/v1/cities/")
 }
 
-export const getProducts = ({page, min_price, max_price}:{page?:number, min_price?:number, max_price?:number}) => {
-    return instance.get<IProductsResponse>(DOMAIN+`api/v1/products/?${page ? `page=${page}` : ""}${min_price ? `&min_price=${min_price}` : ""}${max_price ? `&max_price=${max_price}` : ""}`)
+export const getProducts = ({page, min_price, max_price, product_name, sorting_value}:{page?:number, min_price?:number, max_price?:number, product_name?:string, sorting_value?:string}) => {
+    return instance.get<IProductsResponse>(DOMAIN+`api/v1/products/?${page ? `page=${page}` : ""}${min_price ? `&min_price=${min_price}` : ""}${max_price ? `&max_price=${max_price}` : ""}${product_name ? `&name=${product_name}` : ""}${sorting_value ? `&sorting_value=${sorting_value}` : ""}`)
 }
 
 export const getProduct = ({pk}:{pk:string}) => {
@@ -82,3 +82,8 @@ export const getProductsNonAuth = () => {
     return axios.get<IProductsResponse>(DOMAIN+"api/v1/products/")
 }
 
+// feedback
+
+export const sendFeedback = ({message}:IFeedback) => {
+    return instance.post(DOMAIN+"api/v1/feedback/", {message})
+}

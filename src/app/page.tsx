@@ -16,6 +16,7 @@ import product from '@/../public/images/product_card.jpg'
 import { getProducts } from "@/api/requests";
 import { IProductsResponse } from "@/api/models";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -61,7 +62,7 @@ export default function Home() {
 
 
         <section>
-          <h2 className='m-auto w-fit text-[25px] uppercase font-semibold my-[50px] sl:text-[35px]'>Бестселлеры</h2>
+          <Link href={'/products'} className='block mx-auto w-fit text-[25px] uppercase font-semibold my-[50px] sl:text-[35px]'>Товары</Link>
           <div className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products?.results?.map((item) => (
               <ProductCard data={{ ...item }} getData={fetchData} />

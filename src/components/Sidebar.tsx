@@ -14,7 +14,7 @@ interface IProps {
 export default function Sidebar({ isSidebarOpened, setIsSidebarOpened, setIsModalFeedbackActive}: IProps) {
   return (
     <div
-      className={`fixed top-0 left-0 z-80 h-full w-[100vw] bg-black ease-in-out duration-300 ${
+      className={`fixed top-0 left-0 z-10 h-full w-[100vw] bg-slate-600 ease-in-out duration-300 ${
         isSidebarOpened ? "translate-x-0 " : "-translate-x-full"
       }`}
     >

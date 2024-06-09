@@ -234,15 +234,19 @@ ul[role="navigation"]{
 }
 
 ul[role="navigation"] li {
-  padding: 4px 7px 4px 7px;
   width: 35px;
   height: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #000000;
   color: white;
   border-radius: 100px;
+}
+ul[role="navigation"] li a {
+  padding: 4px 7px 4px 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 li.selected{
@@ -252,4 +256,9 @@ li.selected{
 
 .next, .previous {
   width: fit-content !important;
+}
+
+.react-loading-skeleton{
+  top:-10px;
+  height: 102.5% !important;
 }

@@ -65,14 +65,14 @@ export default function ProfilePageComponent() {
             </div>
 
             <button onClick={() => {
-               let cookieAccess = `access=""; expires= Thu, 01 Jan 1970 00:00:00 GMT}`;
-               let cookieRefresh = `refresh=""; expires= Thu, 01 Jan 1970 00:00:00 GMT}`;
+              let cookieAccess = `access=""; expires= Thu, 01 Jan 1970 00:00:00 GMT}`;
+              let cookieRefresh = `refresh=""; expires= Thu, 01 Jan 1970 00:00:00 GMT}`;
 
-               document.cookie = cookieAccess;
-               document.cookie = cookieRefresh;
-               
+              document.cookie = cookieAccess;
+              document.cookie = cookieRefresh;
+
               router.push('/sign-in')
-            }} className="mb-0 mt-auto h-[65px] rounded-[10px] text-[20px] w-full border-[2px] border-black bg-black text-white hover:bg-black/90 hover:text-white">
+            }} className="mb-0 mt-[20px] h-[65px] rounded-[10px] text-[20px] w-full border-[2px] border-black bg-black text-white hover:bg-black/90 hover:text-white">
               Выйти
             </button>
           </div>
@@ -80,6 +80,10 @@ export default function ProfilePageComponent() {
           <div className="w-full">
             <h2 className="text-[30px] mb-[45px]">Мои заказы</h2>
             <div className="flex flex-col gap-[15px] max-h-[400px] overflow-y-auto p-[1px]">
+              {orders?.length === 0 &&
+                <span className="block font-light text-[24px]">
+                  Нет заказов
+                </span>}
               {orders?.map((item) => (
                 <Order {...item} />
               ))}
@@ -90,6 +94,10 @@ export default function ProfilePageComponent() {
         <section className="mt-[80px]">
           <h2 className="text-[30px] mb-[45px]">Избранное</h2>
           <div className="flex gap-[20px] overflow-x-auto w-full" {...events} ref={ref}>
+            {favorite?.items?.length === 0 &&
+              <span className="block font-light text-[24px]">
+                Нет товаров в избранном
+              </span>}
             {favorite?.items?.map((item) => (
               <FavoriteItem data={{ ...item }} getData={fetchFavorite} />
             ))}

@@ -92,8 +92,9 @@ export interface IFavorite{
     user: number
 }
 
-
-
+export interface IFeedback{
+    message: string
+}
 
 
 // export interface IProductCard {
