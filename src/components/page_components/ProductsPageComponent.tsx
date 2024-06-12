@@ -29,7 +29,7 @@ export default function ProductsPageComponent() {
   const maxPriceInput = useRef<any>(null)
   const minPriceInput = useRef<any>(null)
 
-  const fetchData = (value?:string) => {
+  const fetchData = (value?: string) => {
     getProducts({ page: currentPage, min_price: minPrice, max_price: maxPrice, product_name: value !== undefined ? value : searchInput.trim(), sorting_value: sortingValue.trim() })
       .then((res) => {
         setProducts(res.data)
@@ -58,7 +58,7 @@ export default function ProductsPageComponent() {
 
   return (
     <div className="relative min-h-full">
-      <Header cartData={cart}/>
+      <Header cartData={cart} />
       <main className="flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
         <h2 className="m-auto w-fit text-[25px] uppercase font-semibold mb-[50px] sl:text-[35px]">
           Каталог
@@ -78,10 +78,10 @@ export default function ProductsPageComponent() {
                 onChange={(e) => { setSearchInput(e.target.value) }}
               />
               {searchInput.length !== 0 &&
-                <div onClick={()=>{
+                <div onClick={() => {
                   setSearchInput("")
                   fetchData("")
-                  }} className="absolute w-[12px] right-[15px] top-[16px] md:top-[21px] hover:cursor-pointer">
+                }} className="absolute w-[12px] right-[15px] top-[16px] md:top-[21px] hover:cursor-pointer">
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M21 21L11 11M11 11L1 1M11 11L21 1M11 11L1 21" stroke="#464646" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
@@ -117,6 +117,12 @@ export default function ProductsPageComponent() {
             <div className="relative flex items-center gap-[4px] max-w-[195px] md:ml-[20px] border-[1px] border-[#767676] py-[8px] px-[15px] rounded-full">
               <span className="text-[#646464] text-[16px] font-normal">От</span>
               <input
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const target = e.target as HTMLInputElement;
+                    target.blur();
+                  }
+                }}
                 onBlur={(e) => {
                   setMinPrice(Number(e.target.value) >= 1 ? Number(e.target.value) : 0)
                 }}
@@ -135,6 +141,12 @@ export default function ProductsPageComponent() {
             <div className="relative flex items-center gap-[4px] max-w-[195px] md:ml-[10px] border-[1px] border-[#767676] py-[8px] px-[15px] rounded-full">
               <span className="text-[#646464] text-[16px] font-normal">До</span>
               <input
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const target = e.target as HTMLInputElement;
+                    target.blur();
+                  }
+                }}
                 onBlur={(e) => {
                   setMaxPrice(Number(e.target.value) >= 1 ? Number(e.target.value) : 0)
                 }}

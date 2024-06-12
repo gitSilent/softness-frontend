@@ -101,7 +101,7 @@ export default function RegistrationPageComponent() {
                         <option value="" disabled>Выбрать город</option>
                         {
                             cities?.map((item, idx) => (
-                                <option value={item.id}>{item.name}</option>
+                                <option key={item.id} value={item.id}>{item.name}</option>
                             ))
                         }
                     </select>

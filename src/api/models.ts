@@ -50,6 +50,11 @@ export interface IProductsResponse{
     total_pages: number
 }
 
+export interface IWork{
+    id: number,
+    photo: string
+}
+
 export interface IOrderItem{
     id:number,
     product:IProduct,
@@ -62,7 +67,7 @@ export interface IOrder{
     items: IOrderItem[],
     total: number,
     info: string,
-    status: "NW" | "RD" | "IN",
+    status: "NW" | "RD" | "IN" | "FN",
     user: number
 }
 
@@ -96,6 +101,17 @@ export interface IFeedback{
     message: string
 }
 
+export interface IUserInfo{
+    id: number,
+    city: {
+        id: number,
+        name: string
+    },
+    username: string,
+    first_name: string,
+    last_name: string,
+    email: string
+}
 
 // export interface IProductCard {
 //     id: number,

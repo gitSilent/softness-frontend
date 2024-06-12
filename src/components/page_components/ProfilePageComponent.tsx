@@ -7,8 +7,8 @@ import FavoriteItem from "@/components/FavoriteItem";
 import { useDraggable } from "react-use-draggable-scroll";
 import { authCheck } from "@/service/authCheck";
 import { useRouter } from "next/navigation";
-import { getFavorite, getOrders } from "@/api/requests";
-import { IFavorite, IOrder } from "@/api/models";
+import { getFavorite, getOrders, getUserInfo } from "@/api/requests";
+import { IFavorite, IOrder, IUserInfo } from "@/api/models";
 
 export default function ProfilePageComponent() {
   const ref = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
@@ -17,11 +17,19 @@ export default function ProfilePageComponent() {
 
   const [orders, setOrders] = useState<IOrder[]>()
   const [favorite, setFavorite] = useState<IFavorite>()
+  const [userInfo, setUserInfo] = useState<IUserInfo>()
 
   const fetchFavorite = () => {
     getFavorite()
       .then((res) => {
         setFavorite(res.data)
+      })
+  }
+
+  const fetchOrders = () => {
+    getOrders()
+      .then((res) => {
+        setOrders(res.data)
       })
   }
 
@@ -32,13 +40,12 @@ export default function ProfilePageComponent() {
         return
       }
 
-      getOrders()
-        .then((res) => {
-          setOrders(res.data)
-        }).catch((er) => {
-          console.log(er.response);
-        })
+      getUserInfo()
+      .then((res)=>{
+        setUserInfo(res.data)
+      })
 
+      fetchOrders()
       fetchFavorite()
     })()
 
@@ -46,7 +53,7 @@ export default function ProfilePageComponent() {
   return (
     <div className="relative min-h-full">
       <Header />
-      <main className="flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
+      <main className="flex flex-col m-auto pb-[310px] lg:pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
         <section className="flex flex-col md:flex-row gap-[30px]">
           <div className="flex flex-col justify-between w-full max-w-[570px]">
             <div>
@@ -54,12 +61,12 @@ export default function ProfilePageComponent() {
 
               <div className="flex justify-between w-full mb-[20px] gap-[20px] items-center">
                 <span>Имя пользователя</span>
-                <input type="text" disabled value={'username'} className="w-full max-w-[400px] py-[15px] px-[17px] font-light border-[1px] border-[#767676] rounded-[7px]" />
+                <input type="text" disabled value={userInfo?.username} className="w-full max-w-[400px] py-[15px] px-[17px] font-light border-[1px] border-[#767676] rounded-[7px]" />
               </div>
 
               <div className="flex justify-between w-full gap-[20px] items-center">
                 <span className="whitespace-nowrap">E-mail</span>
-                <input type="text" disabled value={'emailaddress@mail.ru'} className="w-full max-w-[400px] py-[15px] px-[17px] font-light border-[1px] border-[#767676] rounded-[7px]" />
+                <input type="text" disabled value={userInfo?.email} className="w-full max-w-[400px] py-[15px] px-[17px] font-light border-[1px] border-[#767676] rounded-[7px]" />
               </div>
 
             </div>
@@ -85,7 +92,7 @@ export default function ProfilePageComponent() {
                   Нет заказов
                 </span>}
               {orders?.map((item) => (
-                <Order {...item} />
+                <Order key={item.id} data={item} getOrders={fetchOrders}/>
               ))}
             </div>
           </div>
@@ -99,7 +106,7 @@ export default function ProfilePageComponent() {
                 Нет товаров в избранном
               </span>}
             {favorite?.items?.map((item) => (
-              <FavoriteItem data={{ ...item }} getData={fetchFavorite} />
+              <FavoriteItem key={item.id} data={{ ...item }} getData={fetchFavorite} />
             ))}
           </div>
         </section>

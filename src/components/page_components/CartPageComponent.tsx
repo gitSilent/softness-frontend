@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -24,7 +24,6 @@ export default function CartPageComponent() {
       })
   }
 
-
   useEffect(() => {
     (async () => {
       if (!await authCheck()) {
@@ -37,7 +36,6 @@ export default function CartPageComponent() {
 
   return (
     <div className="relative min-h-full">
-      <ToastContainer />
       <Header cartData={cart} />
       <main className="flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
         <h2 className="m-auto w-fit text-[25px] uppercase font-semibold mb-[50px] sl:text-[35px]"> Корзина </h2>
@@ -48,7 +46,7 @@ export default function CartPageComponent() {
             cart?.items && cart?.items.length === 0
               ? <span className="block font-normal text-[36px] mx-auto">Нет товаров в корзине</span>
               : cart?.items.map((item) => (
-                <CartItem data={{ ...item }} getData={fetchData} />
+                <CartItem key={item.id} data={{ ...item }} getData={fetchData} />
               ))
           }
 

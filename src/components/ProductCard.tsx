@@ -2,7 +2,7 @@
 import product from '@/../public/images/product_card.jpg'
 import Link from 'next/link'
 import Image from "next/image";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastParams } from '../service/toastifyParams';
 import { IProduct } from '../api/models';
@@ -38,7 +38,6 @@ export default function ProductCard({ data, getData, getCartData }: IProps) {
 
   return (
     <div className='relative flex flex-col w-full max-w-[320px] max-h-[440px] rounded-tl-[25px] rounded-tr-[25px] overflow-hidden hover:cursor-pointer'>
-      <ToastContainer />
       <Link href={`/products/${data.id}`} className='flex flex-col'>
         <div className='relative w-full h-[250px] bg-gray-50'>
           {!isLoadComplete &&
@@ -76,7 +75,7 @@ export default function ProductCard({ data, getData, getCartData }: IProps) {
         </svg>
       </div>
       <span className='text-[20px] font-normal sl:text-[24px]'>{data.title}</span>
-      <span className='text-[23px] font-medium sl:text-[29px]'>{data.price} Р</span>
+      <span className='text-[23px] font-medium sl:text-[29px]'>{data.price} ₽</span>
       <button onClick={handleClickCart} className={`rounded-[20px] w-full h-[35px] text-center border-2 border-[#565656]  text-[#565656] text-[15px] sl:h-[55px] sl:text-[20px] hover:bg-gray-300 ${data.in_cart ? "bg-[#565656] text-white hover:bg-black/80" : ""}`}>{data.in_cart ? "Уже в корзине" : "В корзину"}</button>
     </div>
   )

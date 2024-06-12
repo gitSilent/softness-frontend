@@ -13,14 +13,16 @@ import safely_icon from '@/../public/images/svg-icons/safely_icon.svg'
 import heart_icon from '@/../public/images/svg-icons/heart_icon.svg'
 import ProductCard from '../components/ProductCard'
 import product from '@/../public/images/product_card.jpg'
-import { getProducts } from "@/api/requests";
-import { IProductsResponse } from "@/api/models";
+import { getCart, getProducts, getWorks } from "@/api/requests";
+import { ICart, IProductsResponse, IWork } from "@/api/models";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 
 export default function Home() {
   const [products, setProducts] = useState<IProductsResponse>()
+  const [cart, setCart] = useState<ICart>()
+  const [works, setWorks] = useState<IWork[]>()
 
   const fetchData = () => {
     getProducts({})
@@ -29,12 +31,25 @@ export default function Home() {
       })
   }
 
+  const fetchCartData = () => {
+    getCart()
+      .then((res) => {
+        setCart(res.data)
+      })
+  }
+
   useEffect(() => {
     fetchData()
-  },[])
+
+    getWorks()
+      .then((res) => {
+        setWorks(res.data)
+      })
+  }, [])
+
   return (
     <div className='relative min-h-full'>
-      <Header />
+      <Header cartData={cart} />
       <main className='flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px] '>
         <Image src={main_banner} alt="" className='hidden sm:block' />
         <Image src={mobile_banner} alt="" className='sm:hidden' />
@@ -65,20 +80,18 @@ export default function Home() {
           <Link href={'/products'} className='block mx-auto w-fit text-[25px] uppercase font-semibold my-[50px] sl:text-[35px]'>Товары</Link>
           <div className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products?.results?.map((item) => (
-              <ProductCard data={{ ...item }} getData={fetchData} />
+              <ProductCard key={item.id} data={{ ...item }} getData={fetchData} getCartData={fetchCartData} />
             ))}
           </div>
+          <Link href="/products" className="block mt-[35px] mx-auto w-fit py-[12px] px-[30px] bg-[#efb279] rounded-[15px] font-medium text-[20px] hover:bg-[#D89556]">Смотреть все товары</Link>
         </section>
 
         <section className='flex flex-col justify-center items-center mb-[100px]'>
           <h2 className='m-auto w-fit text-[25px] uppercase font-semibold my-[50px] sl:text-[35px]'>Наши работы</h2>
-          <div className='flex flex-wrap gap-[10px] m-auto justify-start items-center sl:gap-[20px]'>
-            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
-            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
-            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
-            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
-            <Image src={product} alt="" className='rounded-[25px] w-[45%] max-w-[355px] max-h-[355px]' />
-
+          <div className='flex flex-wrap gap-[10px] m-auto justify-center items-center sl:gap-[20px]'>
+            {works?.map((item) => (
+              <Image src={item.photo} width={355} height={355} alt="" className='rounded-[25px] w-[45%] max-w-[320px] max-h-[320px]' />
+            ))}
           </div>
         </section>
       </main>

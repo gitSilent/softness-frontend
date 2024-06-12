@@ -3,17 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import Image from "next/image";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 // import required modules
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import Review from "@/components/Review";
 
 // Import Swiper styles
 import "swiper/css";
@@ -61,7 +58,6 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
 
   return (
     <div className="relative min-h-full">
-      <ToastContainer />
       <Header cartData={cart} />
       <main className="flex flex-col items-center z-[1] m-auto pb-[400px] pt-[90px] px-[20px] max-w-[1400px]">
         <section className="relative flex flex-col max-w-[500px] lg:max-w-[1000px] w-full z-[1] ">
