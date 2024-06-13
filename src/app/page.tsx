@@ -90,7 +90,7 @@ export default function Home() {
           <h2 className='m-auto w-fit text-[25px] uppercase font-semibold my-[50px] sl:text-[35px]'>Наши работы</h2>
           <div className='flex flex-wrap gap-[10px] m-auto justify-center items-center sl:gap-[20px]'>
             {works?.map((item) => (
-              <Image src={item.photo} width={355} height={355} alt="" className='rounded-[25px] w-[45%] max-w-[320px] max-h-[320px]' />
+              <Image key={item.id} src={item.photo} width={355} height={355} alt="" className='rounded-[25px] w-[45%] max-w-[320px] max-h-[320px]' />
             ))}
           </div>
         </section>
