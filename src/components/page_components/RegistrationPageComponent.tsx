@@ -73,6 +73,7 @@ export default function RegistrationPageComponent() {
 
     return (
         <div className=''>
+            <title>Регистрация</title>
             <ToastContainer />
 
             <form onSubmit={handleSubmit((data: any) => formSubmit(data))} className='flex flex-col max-w-[600px] items-center mt-[125px] px-5  mx-auto'>
@@ -110,7 +111,7 @@ export default function RegistrationPageComponent() {
 
                 <div className='w-full flex gap-[20px] mt-[15px]'>
                     <input type="checkbox" ref={isAgree} />
-                    <span className='underline font-light'>Согласие на обработку персональных данных</span>
+                    <Link href={'/privacy-policy'} className='underline font-light'>Согласие на обработку персональных данных</Link>
                 </div>
 
                 <button type='submit' className="mx-auto mt-[45px] max-w-[280px] h-[65px] rounded-[10px] text-[20px] w-full bg-black text-white">

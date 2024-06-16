@@ -46,6 +46,7 @@ export default function AuthorizationPageComponent() {
 
     return (
         <div className=''>
+            <title>Войти</title>
             <ToastContainer />
 
             <form onSubmit={handleSubmit((data: any) => formSubmit(data))} className='flex flex-col max-w-[600px] items-center mt-[125px] px-5 gap-3 mx-auto'>

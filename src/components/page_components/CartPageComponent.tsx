@@ -36,6 +36,7 @@ export default function CartPageComponent() {
 
   return (
     <div className="relative min-h-full">
+      <title>Корзина</title>
       <Header cartData={cart} />
       <main className="flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
         <h2 className="m-auto w-fit text-[25px] uppercase font-semibold mb-[50px] sl:text-[35px]"> Корзина </h2>

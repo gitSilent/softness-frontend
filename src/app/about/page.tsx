@@ -38,6 +38,8 @@ export default function AboutPage() {
     <div className='relative min-h-full'>
       <Header />
       <main className="flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
+      <title>О нас</title>
+
         <h2 className='mx-auto text-[35px] font-semibold mb-[80px]'>О нас</h2>
         <div className='px-5 md:px-10'>
 

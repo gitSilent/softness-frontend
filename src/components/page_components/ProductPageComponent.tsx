@@ -58,6 +58,7 @@ export default function ProductPageComponent({ pk }: { pk: string }) {
 
   return (
     <div className="relative min-h-full">
+      <title>{product?.title}</title>
       <Header cartData={cart} />
       <main className="flex flex-col items-center z-[1] m-auto pb-[400px] pt-[90px] px-[20px] max-w-[1400px]">
         <section className="relative flex flex-col max-w-[500px] lg:max-w-[1000px] w-full z-[1] ">

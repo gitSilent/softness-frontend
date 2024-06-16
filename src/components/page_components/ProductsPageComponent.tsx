@@ -58,6 +58,7 @@ export default function ProductsPageComponent() {
 
   return (
     <div className="relative min-h-full">
+      <title>Товары</title>
       <Header cartData={cart} />
       <main className="flex flex-col m-auto pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
         <h2 className="m-auto w-fit text-[25px] uppercase font-semibold mb-[50px] sl:text-[35px]">
@@ -128,6 +129,7 @@ export default function ProductsPageComponent() {
                 }}
                 placeholder="2500"
                 ref={minPriceInput}
+                min={1}
                 // value={minPrice}
                 type="number" className="border-none font-normal rounded-full max-w-[80px] bg-[#ECECEC] py-[5px] px-[10px]" />
 
@@ -152,6 +154,7 @@ export default function ProductsPageComponent() {
                 }}
                 placeholder="2500"
                 ref={maxPriceInput}
+                min={1}
                 // value={maxPrice}
                 type="number" className="border-none font-normal rounded-full max-w-[80px] bg-[#ECECEC] py-[5px] px-[10px]" />
 
@@ -167,6 +170,8 @@ export default function ProductsPageComponent() {
             <ProductCard key={item.id} data={{ ...item }} getData={fetchData} getCartData={fetchCartData} />
           ))}
         </div>
+        {products?.results.length === 0 &&
+          <span className="block mx-auto text-[24px] mt-[50px]">Товаров не найдено</span>}
 
         <div className="mt-[50px] mx-auto">
           <ReactPaginate

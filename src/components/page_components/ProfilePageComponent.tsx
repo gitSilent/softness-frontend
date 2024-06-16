@@ -52,6 +52,7 @@ export default function ProfilePageComponent() {
   }, [router])
   return (
     <div className="relative min-h-full">
+      <title>Профиль</title>
       <Header />
       <main className="flex flex-col m-auto pb-[310px] lg:pb-[280px] pt-[90px] px-[20px] max-w-[1400px]">
         <section className="flex flex-col md:flex-row gap-[30px]">

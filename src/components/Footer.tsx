@@ -32,6 +32,9 @@ export default function Footer() {
             <a href="tel:79054756454" className="text-white underline decoration-white">+79054756454</a>
           </div>
         </div>
+        <div>
+          <Link href={'/privacy-policy'} className="block text-white/65 mt-[10px] text-right hover:text-white/80">Политика обработки персональных данных</Link>
+        </div>
       </div>
     </footer>
   );
